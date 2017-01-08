@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
     private TextView deviceNameLabel;
     private RelativeLayout dataCnt;
 
+    /**************************Android APP Status************************/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +91,25 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
         deviceManager.cleanUp();
     }
 
+    /**************************Android Service************************/
+    @Override
+    public void didRequestEnableBluetooth() {
+        // Request the user to enable Bluetooth
+        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // The user chose not to enable Bluetooth
+        if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
+            // You should deal with this
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**************************Empatica Status Delegate************************/
     @Override
     public void didDiscoverDevice(BluetoothDevice bluetoothDevice, String deviceName, int rssi, boolean allowed) {
         // Check if the discovered device can be used with your API key. If allowed is always false,
@@ -108,23 +128,6 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
                 Toast.makeText(MainActivity.this, "Sorry, you can't connect to this device", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    @Override
-    public void didRequestEnableBluetooth() {
-        // Request the user to enable Bluetooth
-        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // The user chose not to enable Bluetooth
-        if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
-            // You should deal with this
-            return;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -162,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
             updateLabel(deviceNameLabel, "");
         }
     }
-
+    /**************************Empatica Data Delegate************************/
     @Override
     public void didReceiveAcceleration(int x, int y, int z, double timestamp) {
         updateLabel(accel_xLabel, "" + x);
@@ -195,15 +198,6 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
         updateLabel(temperatureLabel, "" + temp);
     }
 
-    // Update a label with some text, making sure this is run in the UI thread
-    private void updateLabel(final TextView label, final String text) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                label.setText(text);
-            }
-        });
-    }
     /**************************Click Event************************/
     public void scan(View v){
         searchDeviceBtn.setEnabled(false);
@@ -221,6 +215,16 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
                         searchDeviceBtn.setEnabled(true);
                     }
                 }, SCANNING_TIME);
+            }
+        });
+    }
+    /**************************UI Update************************/
+    // Update a label with some text, making sure this is run in the UI thread
+    private void updateLabel(final TextView label, final String text) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                label.setText(text);
             }
         });
     }

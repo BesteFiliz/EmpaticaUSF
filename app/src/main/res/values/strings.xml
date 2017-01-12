@@ -6,7 +6,9 @@
     <string name="accel_z">z:</string>
     <string name="bvp_label">BVP</string>
     <string name="eda_label">EDA</string>
-    <string name="ibi_label">IBI</string>
+    <string name="ibi_label">IBI:</string>
+    <string name="hr_label">Heart rate:</string>
+    <string name="hrv_lable">HRV</string>
     <string name="emptyText">-</string>
     <string name="temp_label">Temperature</string>
     <string name="battery_label">Battery</string>

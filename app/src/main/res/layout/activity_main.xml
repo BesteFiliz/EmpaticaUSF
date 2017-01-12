@@ -108,25 +108,39 @@
             android:id="@+id/eda"
             android:text="@string/emptyText"/>
 
-        <TextView
-            android:id="@+id/ibi_label"
-            android:layout_marginTop="10dp"
+        <LinearLayout
+            android:id="@+id/heart_info"
             android:layout_below="@id/eda"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ibi_label" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_below="@id/ibi_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ibi"
-            android:text="@string/emptyText"/>
+            <TextView
+                android:id="@+id/ibi_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ibi_label" />
+            <TextView
+                android:id="@+id/ibi"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/emptyText"/>
+            <TextView
+                android:id="@+id/hr_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hr_label" />
+            <TextView
+                android:id="@+id/hr"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/emptyText" />
 
+        </LinearLayout>
         <TextView
             android:id="@+id/temp_label"
             android:layout_marginTop="10dp"
-            android:layout_below="@id/ibi"
+            android:layout_below="@id/heart_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/temp_label" />

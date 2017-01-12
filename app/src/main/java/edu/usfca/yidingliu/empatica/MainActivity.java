@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
     private TextView bvpLabel;
     private TextView edaLabel;
     private TextView ibiLabel;
+    private TextView hrLabel;
     private TextView temperatureLabel;
     private TextView batteryLabel;
     private TextView statusLabel;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
         bvpLabel = (TextView) findViewById(R.id.bvp);
         edaLabel = (TextView) findViewById(R.id.eda);
         ibiLabel = (TextView) findViewById(R.id.ibi);
+        hrLabel = (TextView) findViewById(R.id.hr);
         temperatureLabel = (TextView) findViewById(R.id.temperature);
         batteryLabel = (TextView) findViewById(R.id.battery);
         deviceNameLabel = (TextView) findViewById(R.id.deviceName);
@@ -191,6 +193,8 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
     @Override
     public void didReceiveIBI(float ibi, double timestamp) {
         updateLabel(ibiLabel, "" + ibi);
+        float hr=60/ibi;
+        updateLabel(hrLabel,""+ Math.round(hr));
     }
 
     @Override

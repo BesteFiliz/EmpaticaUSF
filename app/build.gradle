@@ -25,10 +25,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.loopj.android:android-async-http:1.4.6'
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     compile 'com.android.support:appcompat-v7:25.1.0'
-    testCompile 'junit:junit:4.12'
-    compile project(':empalink-2.0')
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
+    compile 'com.empatica.empalink:empalink:2.1@aar'
 }

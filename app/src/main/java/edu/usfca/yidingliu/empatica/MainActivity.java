@@ -22,6 +22,12 @@ import com.empatica.empalink.config.EmpaStatus;
 import com.empatica.empalink.delegate.EmpaDataDelegate;
 import com.empatica.empalink.delegate.EmpaStatusDelegate;
 
+import org.w3c.dom.Text;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class MainActivity extends AppCompatActivity implements EmpaDataDelegate, EmpaStatusDelegate {
 
     private static final int REQUEST_ENABLE_BT = 1;
@@ -42,12 +48,26 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
     private TextView edaLabel;
     private TextView ibiLabel;
     private TextView hrLabel;
+    private TextView hrvLabel;
     private TextView temperatureLabel;
     private TextView batteryLabel;
     private TextView statusLabel;
     private Button searchDeviceBtn;
     private TextView deviceNameLabel;
     private RelativeLayout dataCnt;
+
+    /****************************Variable of calculating HRV*******************************/
+    private int time=10;//the unit is seconds
+    class IBIdata{
+        public float IBI;
+        public long timestamp;
+        public IBIdata(float IBI,long timestamp){
+            this.IBI=IBI;
+            this.timestamp=timestamp;
+        }
+    }
+    private Queue<IBIdata> queue;
+    private float IBIsum;
 
     /**************************Android APP Status************************/
     @Override
@@ -65,11 +85,16 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
         edaLabel = (TextView) findViewById(R.id.eda);
         ibiLabel = (TextView) findViewById(R.id.ibi);
         hrLabel = (TextView) findViewById(R.id.hr);
+        hrvLabel = (TextView) findViewById(R.id.hrv);
         temperatureLabel = (TextView) findViewById(R.id.temperature);
         batteryLabel = (TextView) findViewById(R.id.battery);
         deviceNameLabel = (TextView) findViewById(R.id.deviceName);
         searchDeviceBtn=(Button) findViewById(R.id.search_device);
         searchDeviceBtn.setEnabled(false);
+
+        //Initialize vars that reference to HRV
+        queue=new LinkedList<>();
+        IBIsum=0;
 
         // Create a new EmpaDeviceManager. MainActivity is both its data and status delegate.
         deviceManager = new EmpaDeviceManager(getApplicationContext(), this, this);
@@ -195,6 +220,8 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
         updateLabel(ibiLabel, "" + ibi);
         float hr=60/ibi;
         updateLabel(hrLabel,""+ Math.round(hr));
+        double HRV=CalculateSD(new IBIdata(ibi,(long)timestamp));
+        updateLabel(hrvLabel,""+ HRV);
     }
 
     @Override
@@ -222,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
             }
         });
     }
-    /**************************UI Update************************/
+    /**************************Private Methods************************/
     // Update a label with some text, making sure this is run in the UI thread
     private void updateLabel(final TextView label, final String text) {
         runOnUiThread(new Runnable() {
@@ -231,5 +258,28 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
                 label.setText(text);
             }
         });
+    }
+
+    // Calculate SD
+    private double CalculateSD(IBIdata data){
+        IBIsum+=data.IBI;
+        queue.add(data);
+        if(data.timestamp-queue.peek().timestamp<time){
+            return 0;
+        }
+        else{
+            while(data.timestamp-queue.peek().timestamp>time){
+                IBIsum-=queue.poll().IBI;
+            }
+
+            float avg=IBIsum/queue.size();
+
+            double SDsum=0;
+            Iterator<IBIdata> iterator=queue.iterator();
+            while(iterator.hasNext()){
+                SDsum+=Math.pow(iterator.next().IBI-avg,2);
+            }
+            return Math.sqrt(SDsum/queue.size());
+        }
     }
 }

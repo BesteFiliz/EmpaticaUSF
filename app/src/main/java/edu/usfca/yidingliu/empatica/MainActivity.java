@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
     private static final long SCANNING_TIME = 10000;//Stop scanning after 10 sec
     //yiding APIKey e4ffcddcb6fe4432939c700cbd9e4efc
     //Beste APIKey fa39f8576b1841fd9f219d6a9f777381
-    private static final String EMPATICA_API_KEY = "e4ffcddcb6fe4432939c700cbd9e4efc";
+    private static final String EMPATICA_API_KEY = "fa39f8576b1841fd9f219d6a9f777381";
 
     private EmpaDeviceManager deviceManager;
     private EmpaStatus status;

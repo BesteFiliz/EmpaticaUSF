@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Empatica.iml" filepath="$PROJECT_DIR$/Empatica.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EmpaticaUSF.iml" filepath="$PROJECT_DIR$/EmpaticaUSF.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
